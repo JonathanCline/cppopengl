@@ -2,8 +2,7 @@
 #ifndef CPPOPENGL_DETAIL_UTILITY_HPP
 #define CPPOPENGL_DETAIL_UTILITY_HPP
 
-
-#ifndef CPPOPENGL_CMAKE
+//#ifndef CPPOPENGL_CMAKE
 
 // Give the macros that should be defined by cmake some reasonable values
 
@@ -34,11 +33,11 @@
 
 #endif
 
-#if (CPPOPENGL_CPP != 14 || CPPOPENGL_CPP != 17 || CPPOPENGL_CPP != 20) && !(CPPOPENGL_CPP >= 23)
+#if !(CPPOPENGL_CPP == 14 || CPPOPENGL_CPP == 17 || CPPOPENGL_CPP == 20 || CPPOPENGL_CPP >= 23)
 	#error "Unsupported C++ version, this could be due to defining an invalid CPPOPENGL_CPP or you just need to bump the version to C++14 or newer"
 #endif
 
-#endif // CPPOPENGL_CMAKE
+
 
 // _CPPOPENGL_REQUIRES
 #if CPPOPENGL_CPP >= 20
