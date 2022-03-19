@@ -25,4 +25,4 @@ macro(CPPOPENGL_ADD_TEST in_testTarget in_testName)
 endmacro()
 
 
-ADD_CMAKE_SUBDIRS_HERE()
+#ADD_CMAKE_SUBDIRS_HERE()

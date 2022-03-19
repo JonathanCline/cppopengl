@@ -68,4 +68,5 @@ namespace gl
 	_CPPOPENGL_DEFINE_UNIQUE_ID(shader);
 	_CPPOPENGL_DEFINE_UNIQUE_ID(program);
 	_CPPOPENGL_DEFINE_UNIQUE_ID(texture);
+
 };
