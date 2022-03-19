@@ -3,4 +3,4 @@ cmake_minimum_required(VERSION 3.12)
 project(cppopengl)
 
 add_library(${PROJECT_NAME} INTERFACE)
-target_include_directories(${PROJECT_NAME} PUBLIC "include")
+target_include_directories(${PROJECT_NAME} INTERFACE "include")
