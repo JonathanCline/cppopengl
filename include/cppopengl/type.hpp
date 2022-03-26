@@ -55,4 +55,14 @@ namespace gl
 
 };
 
+namespace gl
+{
+	struct texture_unit_tag {};
+	using texture_unit = detail::integer_invariant<GLuint, texture_unit_tag>;
+
+	struct uniform_block_binding_tag {};
+	using uniform_block_binding = detail::integer_invariant<GLuint, uniform_block_binding_tag>;
+
+};
+
 #endif // CPPOPENGL_TYPE_HPP

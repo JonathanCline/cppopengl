@@ -4,6 +4,7 @@
 
 /** @file */
 
+#include <cppopengl/context.hpp>
 #include <cppopengl/detail/object_id.hpp>
 
 namespace gl
@@ -43,12 +44,12 @@ namespace gl
 				return this->good();
 			};
 
-			constexpr void reset() noexcept
+			constexpr void reset(const context& ctx) noexcept
 			{
 				if (this->good())
 				{
 					auto _deleter = this->get_deleter();
-					_deleter(this->id());
+					_deleter(ctx, this->id());
 					this->id_.release();
 				};
 			};
@@ -76,14 +77,14 @@ namespace gl
 			{};
 			constexpr basic_unique_id& operator=(basic_unique_id&& other) noexcept
 			{
-				this->reset();
+				this->reset(context{});
 				this->id_ = id_type(other.release());
 				return *this;
 			};
 
 			~basic_unique_id() 
 			{
-				this->reset();
+				this->reset(context{});
 			};
 
 		private:
