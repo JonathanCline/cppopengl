@@ -32,6 +32,56 @@ namespace gl
 	};
 
 
+	enum class type : GLenum
+	{
+		gl_byte = GL_BYTE,
+		gl_unsigned_byte = GL_UNSIGNED_BYTE,
+		gl_short = GL_SHORT,
+		gl_unsigned_short = GL_UNSIGNED_SHORT,
+		gl_int = GL_INT,
+		gl_unsigned_int = GL_UNSIGNED_INT,
+		gl_half_float = GL_HALF_FLOAT,
+		gl_float = GL_FLOAT,
+		gl_double = GL_DOUBLE,
+		gl_fixed = GL_FIXED,
+	};
+
+	/**
+	 * @brief Same as glVertexAttribPointer
+	 * 
+	 * <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glVertexAttribPointer.xhtml" target="_blank">OpenGL Documentation</a>
+	*/
+	inline void vertex_attrib_pointer(const context& ctx, GLuint _index, type _type, GLuint _count, bool _normalize, GLsizei _stride, GLintptr _offset)
+	{
+		ctx.VertexAttribPointer
+		(
+			_index,
+			static_cast<GLint>(_count),
+			static_cast<GLenum>(_type),
+			_normalize,
+			_stride, 
+			static_cast<const void*>((const char*)(0) + _offset)
+		);
+	};
+
+	/**
+	 * @copydoc vertex_attrib_pointer()
+	*/
+	inline void vertex_attrib_pointer(const context& ctx, GLuint _index, type _type, GLuint _count, bool _normalize)
+	{
+		vertex_attrib_pointer(ctx, _index, _type, _count, _normalize, 0, 0);
+	};
+
+	/**
+	 * @copydoc vertex_attrib_pointer()
+	*/
+	inline void vertex_attrib_pointer(const context& ctx, GLuint _index, type _type, GLuint _count)
+	{
+		vertex_attrib_pointer(ctx, _index, _type, _count, false);
+	};
+
+
+
 
 	inline void buffer_data(const context& ctx, vbo_target _target, const void* _data, GLsizeiptr _sizeBytes, vbo_usage _usage)
 	{

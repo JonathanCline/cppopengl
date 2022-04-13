@@ -50,6 +50,10 @@ namespace gl
 	using shader_id = detail::basic_object_id<GLuint, shader_tag>;
 	using texture_id = detail::basic_object_id<GLuint, texture_tag>;
 	using vao_id = detail::basic_object_id<GLuint, vao_tag>;
+
+	/**
+	 * @brief Integer invariant for holding a VBO id.
+	*/
 	using vbo_id = detail::basic_object_id<GLuint, vbo_tag>;
 
 
