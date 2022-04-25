@@ -31,6 +31,21 @@ namespace gl
 		ctx.BindBuffer(static_cast<GLenum>(_target), _id.get());
 	};
 
+	/**
+	 * @brief VBO parameter names
+	*/
+	enum class vbo_param
+	{
+		size = GL_BUFFER_SIZE,
+	};
+
+	inline void get(const context& ctx, vbo_target _target, vbo_param _param, GLint& _outValue)
+	{
+		ctx.GetBufferParameteriv((GLenum)_target, (GLenum)_param, &_outValue);
+	};
+
+
+
 
 	enum class type : GLenum
 	{
@@ -149,5 +164,17 @@ namespace gl
 		return buffer_subdata(ctx, _vao, _vbo, static_cast<const void*>(_data), sizeof(T) * _count, sizeof(T) * _offset);
 	};
 
+	/**
+	 * @brief Gets the size of a VBO's buffer in bytes.
+	 * @param ctx Context.
+	 * @param _target Target the VBO is bound to.
+	 * @return Size in bytes.
+	*/
+	inline GLsizei get_buffer_size(const context& ctx, vbo_target _target)
+	{
+		GLint _value;
+		get(ctx, _target, vbo_param::size, _value);
+		return static_cast<GLsizei>(_value);
+	};
 
 };
