@@ -132,13 +132,19 @@ namespace gl
 	};
 
 
-	inline void buffer_data(const context& ctx, vao_id _vao, vbo_id _vbo, const void* _data, GLsizeiptr _sizeBytes, vbo_usage _usage)
+	inline void buffer_data(const context& ctx, vao_id _vao, vbo_id _vbo, const void* _data, GLsizeiptr _sizeBytes, vbo_target _target,
+		vbo_usage _usage = vbo_usage::static_draw)
 	{
 		const auto o = get_bound_vao(ctx);
 		bind(ctx, _vao);
-		bind(ctx, _vbo, vbo_target::array);
-		buffer_data(ctx, vbo_target::array, _data, _sizeBytes, _usage);
-		bind(ctx, _vao);
+		bind(ctx, _vbo, _target);
+		buffer_data(ctx, _target, _data, _sizeBytes, _usage);
+		bind(ctx, o);
+	};
+	inline void buffer_data(const context& ctx, vao_id _vao, vbo_id _vbo, const void* _data, GLsizeiptr _sizeBytes, vbo_usage _usage =
+		vbo_usage::static_draw)
+	{
+		buffer_data(ctx, _vao, _vbo, _data, _sizeBytes, vbo_target::array, _usage);
 	};
 
 	template <typename T>
