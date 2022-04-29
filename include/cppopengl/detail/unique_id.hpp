@@ -14,6 +14,25 @@ namespace gl
 		template <typename RepT, typename TagT, typename DeleterT>
 		struct basic_unique_id : public TagT
 		{
+		private:
+
+			/**
+			 * @brief Calls reset of the API is global, or checks that the ID has been reset.
+			*/
+			void reset_or_check()
+			{
+#if CPPOPENGL_GLOBAL_API_V
+				// Call reset as API is global.
+				this->reset();
+#else
+				// Ensure reset() was called.
+				if (this->good())
+				{
+					_CPPOPENGL_ERROR("unique_id was not reset()!");
+				};
+#endif
+			};
+
 		public:
 
 			using rep = RepT;
@@ -53,13 +72,23 @@ namespace gl
 					this->id_.release();
 				};
 			};
+
+#if CPPOPENGL_GLOBAL_API_V
+			/**
+			 * @copydoc gl::detail::basic_unique_id::reset()
+			*/
+			constexpr void reset() noexcept
+			{
+				return this->reset(global_context());
+			};
+#endif
+
 			constexpr rep release() noexcept
 			{
 				auto o = this->get();
 				this->id_.release();
 				return o;
 			};
-
 
 			constexpr basic_unique_id() noexcept :
 				id_{}
@@ -77,14 +106,14 @@ namespace gl
 			{};
 			constexpr basic_unique_id& operator=(basic_unique_id&& other) noexcept
 			{
-				this->reset(context{});
+				this->reset_or_check();
 				this->id_ = id_type(other.release());
 				return *this;
 			};
 
 			~basic_unique_id() 
 			{
-				this->reset(context{});
+				this->reset_or_check();
 			};
 
 		private:

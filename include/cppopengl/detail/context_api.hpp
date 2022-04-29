@@ -2636,7 +2636,7 @@ namespace gl
 			return glPolygonOffsetClamp(factor, units, clamp);
 		};
 
-		context() = default;
+		constexpr context() = default;
 	};
 
 };

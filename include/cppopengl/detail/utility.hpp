@@ -83,5 +83,14 @@
 	#define _CPPOPENGL_TCON_ENABLE_IF_T(type, ...) _CPPOPENGL_ENABLE_IF_T(type, __VA_ARGS__)
 #endif
 
+#include <cassert>
+#include <cstdlib>
+
+#ifndef NDEBUG
+#define _CPPOPENGL_ERROR(what) ::assert(false && what)
+#else
+#define _CPPOPENGL_ERROR(what) ::abort()
+#endif
+
 
 #endif // CPPOPENGL_DETAIL_UTILITY_HPP
