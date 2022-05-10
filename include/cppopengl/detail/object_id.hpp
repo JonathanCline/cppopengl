@@ -91,6 +91,7 @@ namespace gl
 		{
 		private:
 			using parent_type = integer_invariant<RepT, TagT>;
+			using this_type = basic_object_id<RepT, TagT>;
 		public:
 
 			using rep = RepT;
@@ -103,6 +104,15 @@ namespace gl
 				return o;
 			};
 			
+			friend constexpr inline bool operator==(const this_type& lhs, const this_type& rhs)
+			{
+				return lhs.get() == rhs.get();
+			};
+			friend constexpr inline bool operator!=(const this_type& lhs, const this_type& rhs)
+			{
+				return lhs.get() != rhs.get();
+			};
+
 			using parent_type::parent_type;
 		};
 	};

@@ -43,6 +43,12 @@ namespace gl
 	{
 		ctx.GetBufferParameteriv((GLenum)_target, (GLenum)_param, &_outValue);
 	};
+	inline GLint get(const context& ctx, vbo_target _target, vbo_param _param)
+	{
+		GLint v;
+		get(ctx, _target, _param, v);
+		return v;
+	};
 
 
 
