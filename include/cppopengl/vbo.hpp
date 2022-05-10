@@ -167,7 +167,7 @@ namespace gl
 		bind(ctx, _vao);
 		bind(ctx, _vbo, vbo_target::array);
 		buffer_subdata(ctx, vbo_target::array, _data, _sizeBytes, _offsetBytes);
-		bind(ctx, _vao);
+		bind(ctx, o);
 	};
 	
 	template <typename T>
