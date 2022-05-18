@@ -77,8 +77,11 @@ class ContextType:
 		self.version = version
 
 def create_context_type(version,
-	disabled_extensions : "list[str]",
-	spec_cache):
+	spec_cache,
+	disabled_extensions : "list[str]" = None):
+
+	if disabled_extensions is None:
+		disabled_extensions = []
 
 	context = ContextType(version)
 	functions_path =  spec_cache.joinpath(f"{version}/functions.glspec")
@@ -190,7 +193,6 @@ class CodeGenerator:
 		for v in context_versions:
 			context_objects.append(create_context_type(
 				version = v,
-				disabled_extensions = extension_suffixes,
 				spec_cache = spec_cache))
 
 		for v in context_objects:
