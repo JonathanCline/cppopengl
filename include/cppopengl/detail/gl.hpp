@@ -7,7 +7,14 @@
 		#include <glad/glad.h>
 	#endif
 #else
-	#error "No gl header file specified, enable using a loader header like glad or include a similar loader."
+	// auto deduce
+
+	#if defined(__glad_h_)
+		// OK - using glad
+	#else
+		#error "No gl header file specified, enable using a loader header like glad or include a similar loader."
+	#endif
+
 #endif
 
 

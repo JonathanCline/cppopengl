@@ -10,20 +10,26 @@
 	#error "cppopengl requires a reasonably sane C++ compiler, this one doesn't even have __cplusplus defined..."
 #endif
 
+#ifdef _MSC_VER
+	#define CPPOPENGL_CPP_VERSION _MSVC_LANG
+#else
+	#define CPPOPENGL_CPP_VERSION __cplusplus
+#endif
+
 #ifndef CPPOPENGL_CPP
-	#if __cplusplus <= 199711L
+	#if CPPOPENGL_CPP_VERSION <= 199711L
 		// C++03 (or earlier)
 		#define CPPOPENGL_CPP 03
-	#elif __cplusplus == 201103L
+	#elif CPPOPENGL_CPP_VERSION == 201103L
 		// C++11
 		#define CPPOPENGL_CPP 11
-	#elif __cplusplus == 201402L
+	#elif CPPOPENGL_CPP_VERSION == 201402L
 		// C++14
 		#define CPPOPENGL_CPP 14
-	#elif __cplusplus ==  201703L
+	#elif CPPOPENGL_CPP_VERSION ==  201703L
 		// C++17
 		#define CPPOPENGL_CPP 17
-	#elif __cplusplus == 202002L
+	#elif CPPOPENGL_CPP_VERSION == 202002L
 		// C++20
 		#define CPPOPENGL_CPP 20
 	#else
