@@ -104,12 +104,12 @@ namespace gl
 
 
 
-	inline void buffer_data(const context& ctx, vbo_target _target, const void* _data, GLsizeiptr _sizeBytes, vbo_usage _usage)
+	inline void buffer_data(const context& ctx, vbo_target _target, const void* _data, GLsizeiptr _sizeBytes, vbo_usage _usage = gl::vbo_usage::static_draw)
 	{
 		ctx.BufferData(static_cast<GLenum>(_target), _sizeBytes, _data, static_cast<GLenum>(_usage));
 	};
 	template <typename T>
-	inline void buffer_data(const context& ctx, vbo_target _target, const T* _data, GLsizeiptr _count, vbo_usage _usage)
+	inline void buffer_data(const context& ctx, vbo_target _target, const T* _data, GLsizeiptr _count, vbo_usage _usage = gl::vbo_usage::static_draw)
 	{
 		ctx.BufferData(static_cast<GLenum>(_target), sizeof(T) * _count, _data, static_cast<GLenum>(_usage));
 	};
@@ -136,6 +136,11 @@ namespace gl
 
 		bind(ctx, _oldVAO);
 	};
+
+
+
+	
+
 
 
 	inline void buffer_data(const context& ctx, vao_id _vao, vbo_id _vbo, const void* _data, GLsizeiptr _sizeBytes, vbo_target _target,

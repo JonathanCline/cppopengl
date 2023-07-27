@@ -2,8 +2,18 @@
 
 #include <cppopengl/detail/gl.hpp>
 
+#include <type_traits>
+
 namespace gl
 {
+	template <typename T>
+	constexpr auto to_underlying(T v) -> std::underlying_type_t<T>
+	{
+		return static_cast<std::underlying_type_t<T>>(v);
+	};
+
+
+
 	enum class shader_type : GLenum
 	{
 		vertex = GL_VERTEX_SHADER,
@@ -45,4 +55,19 @@ namespace gl
 		dynamic_read = GL_DYNAMIC_READ,
 	};
 
+	enum class draw_mode : GLenum
+	{
+		points = GL_POINTS,
+		line_strip = GL_LINE_STRIP,
+		line_loop = GL_LINE_LOOP,
+		lines = GL_LINES,
+		line_strip_adjacency = GL_LINE_STRIP_ADJACENCY,
+		lines_adjacency = GL_LINES_ADJACENCY,
+		triangle_strip = GL_TRIANGLE_STRIP,
+		triangle_fan = GL_TRIANGLE_FAN,
+		triangles = GL_TRIANGLES,
+		triangle_strip_adjacency = GL_TRIANGLE_STRIP_ADJACENCY,
+		triangles_adjacency = GL_TRIANGLES_ADJACENCY,
+		patches = GL_PATCHES
+	};
 };

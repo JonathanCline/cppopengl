@@ -45,7 +45,7 @@ namespace gl
 				return deleter_type{};
 			};
 
-			constexpr id_type id() const noexcept
+			constexpr const id_type& id() const noexcept
 			{
 				return this->id_;
 			};
@@ -83,9 +83,16 @@ namespace gl
 			};
 #endif
 
-			constexpr rep release() noexcept
+			constexpr rep raw_release() noexcept
 			{
 				auto o = this->get();
+				this->id_.release();
+				return o;
+			};
+
+			constexpr id_type release() noexcept
+			{
+				auto o = this->id();
 				this->id_.release();
 				return o;
 			};

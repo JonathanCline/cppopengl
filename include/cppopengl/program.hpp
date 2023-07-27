@@ -42,6 +42,20 @@ namespace gl
 	{
 		return program_id( ctx.CreateProgram() );
 	};
+
+	
+	/**
+	 * @brief Invokes glUseProgram.
+	 * [OpenGL Documentation](https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glUseProgram.xhtml)
+	 * 
+	 * @param ctx OpenGL context.
+	 * @param _program An OpenGL program object ID.
+	 */
+	inline void use_program(const context& ctx, program_id _program)
+	{
+		ctx.UseProgram(_program.get());
+	};
+
 	
 	inline void attach(const context& ctx, program_id _program, shader_id _shader)
 	{
@@ -133,5 +147,30 @@ namespace gl
 		return _str;
 	};
 
+
+
+	/**
+	 * @brief Invokes glEnableVertexAttribArray.
+	 * [OpenGL Documentation](https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glEnableVertexAttribArray.xhtml)
+	 *
+	 * @param ctx OpenGL context.
+	 * @param _index Program attribute index to enable.
+	 */
+	inline void enable_vertex_attrib_array(const context& ctx, GLuint _index)
+	{
+		ctx.EnableVertexAttribArray(_index);
+	};
+
+	/**
+	 * @brief Invokes glDisableVertexAttribArray.
+	 * [OpenGL Documentation](https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glDisableVertexAttribArray.xhtml)
+	 *
+	 * @param ctx OpenGL context.
+	 * @param _index Program attribute index to disable.
+	 */
+	inline void disable_vertex_attrib_array(const context& ctx, GLuint _index)
+	{
+		ctx.DisableVertexAttribArray(_index);
+	};
 
 };
