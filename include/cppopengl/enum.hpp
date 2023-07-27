@@ -13,6 +13,20 @@ namespace gl
 	};
 
 
+	enum class type : GLenum
+	{
+		gl_byte = GL_BYTE,
+		gl_unsigned_byte = GL_UNSIGNED_BYTE,
+		gl_short = GL_SHORT,
+		gl_unsigned_short = GL_UNSIGNED_SHORT,
+		gl_int = GL_INT,
+		gl_unsigned_int = GL_UNSIGNED_INT,
+		gl_half_float = GL_HALF_FLOAT,
+		gl_float = GL_FLOAT,
+		gl_double = GL_DOUBLE,
+		gl_fixed = GL_FIXED,
+	};
+
 
 	enum class shader_type : GLenum
 	{

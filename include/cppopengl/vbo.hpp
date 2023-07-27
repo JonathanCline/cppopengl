@@ -7,6 +7,8 @@
 #include <cppopengl/type.hpp>
 #include <cppopengl/context.hpp>
 
+#include <span>
+
 namespace gl
 {
 	inline vbo_id new_vbo(const context& ctx)
@@ -52,25 +54,10 @@ namespace gl
 
 
 
-
-	enum class type : GLenum
-	{
-		gl_byte = GL_BYTE,
-		gl_unsigned_byte = GL_UNSIGNED_BYTE,
-		gl_short = GL_SHORT,
-		gl_unsigned_short = GL_UNSIGNED_SHORT,
-		gl_int = GL_INT,
-		gl_unsigned_int = GL_UNSIGNED_INT,
-		gl_half_float = GL_HALF_FLOAT,
-		gl_float = GL_FLOAT,
-		gl_double = GL_DOUBLE,
-		gl_fixed = GL_FIXED,
-	};
-
+	
 	/**
 	 * @brief Same as glVertexAttribPointer
-	 * 
-	 * <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glVertexAttribPointer.xhtml" target="_blank">OpenGL Documentation</a>
+	 * [OpenGL Documentation](https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glVertexAttribPointer.xhtml)
 	*/
 	inline void vertex_attrib_pointer(const context& ctx, GLuint _index, type _type, GLuint _count, bool _normalize, GLsizei _stride, GLintptr _offset)
 	{
@@ -104,37 +91,42 @@ namespace gl
 
 
 
-	inline void buffer_data(const context& ctx, vbo_target _target, const void* _data, GLsizeiptr _sizeBytes, vbo_usage _usage = gl::vbo_usage::static_draw)
+	/**
+	 * @brief Same as glBufferData
+	 * [OpenGL Documentation](https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glBufferData.xhtml)
+	*/
+	inline void buffer_data(const context& ctx, vbo_target _target, const std::byte* _data, GLsizeiptr _sizeBytes, vbo_usage _usage = gl::vbo_usage::static_draw)
 	{
 		ctx.BufferData(static_cast<GLenum>(_target), _sizeBytes, _data, static_cast<GLenum>(_usage));
 	};
-	template <typename T>
-	inline void buffer_data(const context& ctx, vbo_target _target, const T* _data, GLsizeiptr _count, vbo_usage _usage = gl::vbo_usage::static_draw)
+
+	/**
+	 * @brief Same as glBufferData
+	 * [OpenGL Documentation](https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glBufferData.xhtml)
+	*/
+	template <typename T, size_t Extent>
+	inline void buffer_data(const context& ctx, vbo_target _target, std::span<const T, Extent> _data, vbo_usage _usage = gl::vbo_usage::static_draw)
 	{
-		ctx.BufferData(static_cast<GLenum>(_target), sizeof(T) * _count, _data, static_cast<GLenum>(_usage));
+		ctx.BufferData(static_cast<GLenum>(_target), _data.size_bytes(), _data.data(), static_cast<GLenum>(_usage));
 	};
 
-	inline void buffer_subdata(const context& ctx, vbo_target _target, const void* _data, GLsizeiptr _sizeBytes, GLintptr _offsetBytes)
+
+	inline void buffer_subdata(const context& ctx, vbo_target _target, const std::byte* _data, GLsizeiptr _sizeBytes, GLintptr _offsetBytes)
 	{
 		ctx.BufferSubData(static_cast<GLenum>(_target), _offsetBytes, _sizeBytes, _data);
 	};
-	template <typename T>
-	inline void buffer_subdata(const context& ctx, vbo_target _target, const T* _data, GLsizeiptr _count, GLintptr _offset)
+
+	template <typename T, size_t Extent>
+	inline void buffer_subdata(const context& ctx, vbo_target _target, std::span<const T, Extent> _data, GLintptr _offset)
 	{
-		return buffer_subdata(ctx, _target, static_cast<const void*>(_data), _count * sizeof(T), _offset * sizeof(T));
+		ctx.BufferSubData(ctx, _target, _offset, _data.size_bytes(), _data.data());
 	};
 
 
 
-	// Adds a vbo to a vao
-	inline void assign_buffer(const context& ctx, vao_id _vao, vbo_id _vbo, vbo_target _target)
+	inline void vertex_array_vertex_buffer(const context& ctx, vao_id _vao, GLuint _bindingIndex, vbo_id _vbo, GLintptr _offset, GLsizei _stride)
 	{
-		const auto _oldVAO = get_bound_vao(ctx);
-
-		bind(ctx, _vao);
-		bind(ctx, _vbo, _target);
-
-		bind(ctx, _oldVAO);
+		ctx.VertexArrayVertexBuffer(_vao.get(), _bindingIndex, _vbo.get(), _offset, _stride);
 	};
 
 
@@ -142,44 +134,6 @@ namespace gl
 	
 
 
-
-	inline void buffer_data(const context& ctx, vao_id _vao, vbo_id _vbo, const void* _data, GLsizeiptr _sizeBytes, vbo_target _target,
-		vbo_usage _usage = vbo_usage::static_draw)
-	{
-		const auto o = get_bound_vao(ctx);
-		bind(ctx, _vao);
-		bind(ctx, _vbo, _target);
-		buffer_data(ctx, _target, _data, _sizeBytes, _usage);
-		bind(ctx, o);
-	};
-	inline void buffer_data(const context& ctx, vao_id _vao, vbo_id _vbo, const void* _data, GLsizeiptr _sizeBytes, vbo_usage _usage =
-		vbo_usage::static_draw)
-	{
-		buffer_data(ctx, _vao, _vbo, _data, _sizeBytes, vbo_target::array, _usage);
-	};
-
-	template <typename T>
-	inline void buffer_data(const context& ctx, vao_id _vao, vbo_id _vbo, const T* _data, GLsizeiptr _count, vbo_usage _usage)
-	{
-		return buffer_data(ctx, _vao, _vbo, static_cast<const void*>(_data), sizeof(T) * _count, _usage);
-	};
-
-
-
-	inline void buffer_subdata(const context& ctx, vao_id _vao, vbo_id _vbo, const void* _data, GLsizeiptr _sizeBytes, GLintptr _offsetBytes)
-	{
-		const auto o = get_bound_vao(ctx);
-		bind(ctx, _vao);
-		bind(ctx, _vbo, vbo_target::array);
-		buffer_subdata(ctx, vbo_target::array, _data, _sizeBytes, _offsetBytes);
-		bind(ctx, o);
-	};
-	
-	template <typename T>
-	inline void buffer_subdata(const context& ctx, vao_id _vao, vbo_id _vbo, const T* _data, GLsizeiptr _count, GLintptr _offset)
-	{
-		return buffer_subdata(ctx, _vao, _vbo, static_cast<const void*>(_data), sizeof(T) * _count, sizeof(T) * _offset);
-	};
 
 	/**
 	 * @brief Gets the size of a VBO's buffer in bytes.
