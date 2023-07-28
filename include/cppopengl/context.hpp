@@ -27,7 +27,7 @@ namespace gl
 	 * @param ctx The opengl context to load.
 	 * @return True on good load, false on error.
 	*/
-	bool load_gl(const context& ctx)
+	inline bool load_gl(const context& ctx)
 	{
 		return gladLoadGL();
 	};
@@ -42,7 +42,7 @@ namespace gl
 	 * @param ctx The OpenGL context to load.
 	 * @return True on good load, false on error.
 	*/
-	bool load_gl(const context& ctx, LoadProcFn _loadProc)
+	inline bool load_gl(const context& ctx, LoadProcFn _loadProc)
 	{
 		return gladLoadGLLoader(_loadProc);
 	};
