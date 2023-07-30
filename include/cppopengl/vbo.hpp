@@ -33,6 +33,11 @@ namespace gl
 		ctx.BindBuffer(static_cast<GLenum>(_target), _id.get());
 	};
 
+	inline void unbind(const context& ctx, vbo_target _target)
+	{
+		ctx.BindBuffer(static_cast<GLenum>(_target), 0);
+	};
+
 	/**
 	 * @brief VBO parameter names
 	*/
