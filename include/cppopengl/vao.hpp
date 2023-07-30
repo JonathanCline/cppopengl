@@ -3,6 +3,7 @@
 /** @file */
 
 #include <cppopengl/type.hpp>
+#include <cppopengl/unique.hpp>
 #include <cppopengl/context.hpp>
 
 namespace gl

@@ -105,7 +105,7 @@ namespace gl
 	 * [OpenGL Documentation](https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glBufferData.xhtml)
 	*/
 	template <typename T, size_t Extent>
-	inline void buffer_data(const context& ctx, vbo_target _target, std::span<const T, Extent> _data, vbo_usage _usage = gl::vbo_usage::static_draw)
+	inline void buffer_data(const context& ctx, vbo_target _target, std::span<T, Extent> _data, vbo_usage _usage = gl::vbo_usage::static_draw)
 	{
 		ctx.BufferData(static_cast<GLenum>(_target), _data.size_bytes(), _data.data(), static_cast<GLenum>(_usage));
 	};
@@ -117,9 +117,9 @@ namespace gl
 	};
 
 	template <typename T, size_t Extent>
-	inline void buffer_subdata(const context& ctx, vbo_target _target, std::span<const T, Extent> _data, GLintptr _offset)
+	inline void buffer_subdata(const context& ctx, vbo_target _target, std::span<T, Extent> _data, GLintptr _offsetBytes)
 	{
-		ctx.BufferSubData(ctx, _target, _offset, _data.size_bytes(), _data.data());
+		ctx.BufferSubData(static_cast<GLenum>(_target), _offsetBytes, _data.size_bytes(), _data.data());
 	};
 
 
