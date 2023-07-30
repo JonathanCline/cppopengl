@@ -116,6 +116,53 @@ namespace gl
 			using parent_type::parent_type;
 		};
 	};
+
+	/**
+	 * @brief Null ID type representing a null opengl object ID.
+	*/
+	struct null_id_t
+	{
+		template <typename RepT, typename TagT>
+		friend constexpr inline bool operator==(const null_id_t& lhs, const detail::basic_object_id<RepT, TagT>& rhs) noexcept
+		{
+			return rhs.get() == 0;
+		};
+		template <typename RepT, typename TagT>
+		friend constexpr inline bool operator!=(const null_id_t& lhs, const detail::basic_object_id<RepT, TagT>& rhs) noexcept
+		{
+			return rhs.get() != 0;
+		};
+		template <typename RepT, typename TagT>
+		friend constexpr inline bool operator==(const detail::basic_object_id<RepT, TagT>& lhs, const null_id_t& rhs) noexcept
+		{
+			return lhs.get() == 0;
+		};
+		template <typename RepT, typename TagT>
+		friend constexpr inline bool operator!=(const detail::basic_object_id<RepT, TagT>& lhs, const null_id_t& rhs) noexcept
+		{
+			return lhs.get() != 0;
+		};
+
+		// identities
+		constexpr bool operator==(const null_id_t) const noexcept { return true; };
+		constexpr bool operator!=(const null_id_t) const noexcept { return false; };
+
+		constexpr explicit operator bool() const noexcept { return false; };
+
+		template <typename RepT, typename TagT>
+		constexpr operator detail::basic_object_id<RepT, TagT>() const noexcept
+		{
+			return detail::basic_object_id<RepT, TagT>{};
+		};
+
+		constexpr explicit null_id_t() noexcept = default;
+	};
+
+	/**
+	 * @brief Null ID value representing a null opengl object ID.
+	*/
+	constexpr inline null_id_t null_id{};
+
 };
 
 #endif // CPPOPENGL_DETAIL_OBJECT_ID_HPP

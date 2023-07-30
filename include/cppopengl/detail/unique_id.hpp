@@ -97,9 +97,62 @@ namespace gl
 				return o;
 			};
 
+			constexpr bool operator==(const basic_unique_id& rhs) const noexcept = default;
+			constexpr bool operator!=(const basic_unique_id& rhs) const noexcept = default;
+
+			friend inline constexpr bool operator==(const basic_unique_id& lhs, const id_type& rhs) noexcept
+			{
+				return lhs.id() == rhs;
+			};
+			friend inline constexpr bool operator==(const id_type& lhs, const basic_unique_id& rhs) noexcept
+			{
+				return lhs == rhs.id();
+			};
+			friend inline constexpr bool operator!=(const basic_unique_id& lhs, const id_type& rhs) noexcept
+			{
+				return lhs.id() != rhs;
+			};
+			friend inline constexpr bool operator!=(const id_type& lhs, const basic_unique_id& rhs) noexcept
+			{
+				return lhs != rhs.id();
+			};
+
+			friend inline constexpr bool operator==(const basic_unique_id& lhs, const null_id_t& rhs) noexcept
+			{
+				return lhs.id() == rhs;
+			};
+			friend inline constexpr bool operator==(const null_id_t& lhs, const basic_unique_id& rhs) noexcept
+			{
+				return lhs == rhs.id();
+			};
+			friend inline constexpr bool operator!=(const basic_unique_id& lhs, const null_id_t& rhs) noexcept
+			{
+				return lhs.id() != rhs;
+			};
+			friend inline constexpr bool operator!=(const null_id_t& lhs, const basic_unique_id& rhs) noexcept
+			{
+				return lhs != rhs.id();
+			};
+
+
 			constexpr basic_unique_id() noexcept :
 				id_{}
 			{};
+
+			/**
+			 * @brief Constructs a null unique_id. This is equivalent to the default constructor.
+			 * @param nt Null id value
+			*/
+			constexpr basic_unique_id(null_id_t nt) noexcept :
+				id_{}
+			{};
+
+#if CPPOPENGL_GLOBAL_API_V
+			constexpr basic_unique_id& operator=(null_id_t nt) noexcept
+			{
+				this->reset();
+			};
+#endif
 
 			constexpr explicit basic_unique_id(id_type _id) noexcept :
 				id_(_id)
