@@ -5,6 +5,33 @@ import requests
 from parse_glspec import parse_spec
 
 
+class GLVersion:
+	def parse(version : str):
+		if type(version) == type(GLVersion(0,0)): 
+			return version
+		else:
+			parts = version.split("_")
+			return GLVersion(int(parts[0]), int(parts[1]))
+
+	def __eq__(self, rhs) :
+		return self.major == rhs.major and self.minor == rhs.minor
+
+	def __lt__(self, rhs) :
+		return self.major < rhs.major or (self.major == rhs.major and self.minor < rhs.minor)
+	def __le__(self, rhs) :
+		return self.major < rhs.major or (self.major == rhs.major and self.minor <= rhs.minor)
+	def __gt__(self, rhs) :
+		return self.major > rhs.major or (self.major == rhs.major and self.minor > rhs.minor)
+	def __ge__(self, rhs) :
+		return self.major > rhs.major or (self.major == rhs.major and self.minor >= rhs.minor)
+
+	def __str__(self) : 
+		return f"{self.major}_{self.minor}" 
+
+	def __init__(self, major : int, minor : int) :
+		self.major = major
+		self.minor = minor
+
 class ContextFunctionArg:
 	
 	def as_declaration_arg(self) -> str:
@@ -24,6 +51,8 @@ class ContextFunction:
 		name = self.name.removeprefix("gl")
 		
 		lines = []
+
+		lines.append(f"#ifdef GL_VERSION_{self.gl_version}")
 		header = f"{self.fore_mods} {self.return_type} APIENTRY {name} ({args_str}) {self.post_mods}".strip()
 		lines.append(header)
 		
@@ -31,8 +60,9 @@ class ContextFunction:
 			lines.append("\t{")
 			for v in self.body:
 				lines.append("\t" + v)
-			lines.append("\t}")
-		
+			lines.append("\t};")
+		lines.append("#endif")
+
 		return "\n".join(lines)
 
 	def arg_names(self) -> "list[str]" :
@@ -41,13 +71,16 @@ class ContextFunction:
 			o.append(v.name)
 		return o
 
-	def __init__(self, name, return_type, args : "list[ContextFunctionArg]"):
+	def __init__(self, name, return_type, args : "list[ContextFunctionArg]",
+		glVersion : str):
+		
 		self.name : str = name
 		self.return_type : str = return_type
 		self.args : "list[ContextFunctionArg]" = args
 		self.fore_mods = ""
 		self.post_mods = "const noexcept"
 		self.body = []
+		self.gl_version = glVersion
 
 class ContextType:
 
@@ -57,7 +90,7 @@ class ContextType:
 		code_lines.append("{")
 		for v in self.functions:
 			fdecl = v.as_declaration()
-			code_lines.append(f"\t{fdecl};")
+			code_lines.append(f"\t{fdecl}")
 		code_lines.append("")
 		code_lines.append(f"\t{classname}() = default;")
 		code_lines.append("};")
@@ -72,18 +105,18 @@ class ContextType:
 			v.body.append(f"\treturn {v.name}({args_str});")
 
 
-	def __init__(self, version):
+	def __init__(self, version : GLVersion | str):
 		self.functions : "list[ContextFunction]" = []
-		self.version = version
+		self.version : GLVersion = GLVersion.parse(version)
 
-def create_context_type(version,
+def create_context_type(version : str,
 	spec_cache,
 	disabled_extensions : "list[str]" = None):
 
 	if disabled_extensions is None:
 		disabled_extensions = []
 
-	context = ContextType(version)
+	context = ContextType(GLVersion.parse(version))
 	functions_path =  spec_cache.joinpath(f"{version}/functions.glspec")
 	file = open(functions_path, "r")
 	lines = file.readlines()
@@ -105,16 +138,9 @@ def create_context_type(version,
 		for function_arg in function_args:
 			farg_name, _, farg_type = function_arg.partition(":")
 			split_args.append(ContextFunctionArg(farg_name, farg_type))
-		context.functions.append(ContextFunction(function_name, return_type, split_args))
+		context.functions.append(ContextFunction(function_name, return_type, split_args, version))
 	return context
 
-
-class GLVersion:
-	def __eq__(self, rhs) :
-		return self.major == rhs.major and self.minor == rhs.minor
-	def __init__(self, major : int, minor : int) :
-		self.major = major
-		self.minor = minor
 
 
 
@@ -186,19 +212,20 @@ class CodeGenerator:
 			"1_0", "1_1", "1_2", "1_3", "1_4", "1_5",
 			"2_0","2_1",
 			"3_0", "3_1", "3_2", "3_3",
-			"4_0", "4_1", "4_2", "4_3", "4_4", "4_5", "4_6",
+			"4_0", "4_1", "4_2", "4_3", "4_4", "4_5", "4_6"
 		]
 		context = ContextType("4_6")
 
 		for v in context_versions:
-			context_objects.append(create_context_type(
-				version = v,
-				spec_cache = spec_cache))
+			if GLVersion.parse(v) <= context.version:
+				context_objects.append(create_context_type(
+					version = v,
+					spec_cache = spec_cache))
 
 		for v in context_objects:
 			context.functions.extend(v.functions)
 			
-		file = open("_codegen/test_context.hpp", "w")
+		file = open("_codegen/context_api.hpp", "w")
 		file.write("#pragma once\n\n")
 		file.write("#include <cppopengl/detail/gl.hpp>\n\n")
 		file.write("namespace gl\n{\n")

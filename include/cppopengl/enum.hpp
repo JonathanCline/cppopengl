@@ -32,7 +32,9 @@ namespace gl
 	{
 		vertex = GL_VERTEX_SHADER,
 		fragment = GL_FRAGMENT_SHADER,
+#ifdef GL_COMPUTER_SHADER
 		compute = GL_COMPUTE_SHADER,
+#endif
 		geometry = GL_GEOMETRY_SHADER,
 	};
 

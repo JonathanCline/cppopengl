@@ -128,12 +128,12 @@ namespace gl
 	};
 
 
-
+#ifdef GL_VERSION_4_5
 	inline void vertex_array_vertex_buffer(const context& ctx, vao_id _vao, GLuint _bindingIndex, vbo_id _vbo, GLintptr _offset, GLsizei _stride)
 	{
 		ctx.VertexArrayVertexBuffer(_vao.get(), _bindingIndex, _vbo.get(), _offset, _stride);
 	};
-
+#endif
 
 
 	

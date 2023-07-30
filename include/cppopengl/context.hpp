@@ -5,6 +5,7 @@
 /** @file */
 
 #include <cppopengl/detail/gl.hpp>
+#include <cppopengl/detail/utility.hpp>
 #include <cppopengl/detail/context_api.hpp>
 
 /**
@@ -45,6 +46,19 @@ namespace gl
 	inline bool load_gl(const context& ctx, LoadProcFn _loadProc)
 	{
 		return gladLoadGLLoader(_loadProc);
+	};
+
+	/**
+	 * @brief Retrieves the version of the OpenGL context.
+	 * @param ctx OpenGL context.
+	 * @return OpenGL version value.
+	*/
+	inline version get_version(const context& ctx)
+	{
+		GLint ma = 0, mi = 0;
+		ctx.GetIntegerv(GL_MAJOR_VERSION, &ma);
+		ctx.GetIntegerv(GL_MINOR_VERSION, &mi);
+		return version{ static_cast<version::rep>(ma), static_cast<version::rep>(mi) };
 	};
 };
 

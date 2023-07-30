@@ -98,5 +98,54 @@
 #define _CPPOPENGL_ERROR(what) ::abort()
 #endif
 
+#include <cstdint>
+
+namespace gl
+{
+	/**
+	 * @brief Simple type for represeting opengl major.minor version values
+	*/
+	struct version
+	{
+		/**
+		 * @brief Type used to represent version component values.
+		*/
+		using rep = int8_t;
+
+		/**
+		 * @brief Version major value.
+		*/
+		rep major;
+
+		/**
+		 * @brief Version minor value.
+		*/
+		rep minor;
+
+		constexpr bool operator==(const version& rhs) const noexcept = default;
+		constexpr bool operator!=(const version& rhs) const noexcept = default;
+		constexpr bool operator>(const version& rhs) const noexcept
+		{
+			return this->major > rhs.major || (this->major == rhs.major && this->minor > rhs.minor);
+		};
+		constexpr bool operator>=(const version& rhs) const noexcept
+		{
+			return this->major > rhs.major || (this->major == rhs.major && this->minor >= rhs.minor);
+		};
+		constexpr bool operator<(const version& rhs) const noexcept
+		{
+			return this->major < rhs.major || (this->major == rhs.major && this->minor < rhs.minor);
+		};
+		constexpr bool operator<=(const version& rhs) const noexcept
+		{
+			return this->major < rhs.major || (this->major == rhs.major && this->minor <= rhs.minor);
+		};
+
+		constexpr version() noexcept = default;
+		constexpr explicit version(rep _major, rep _minor) noexcept :
+			major(_major), minor(_minor)
+		{};
+	};
+}
 
 #endif // CPPOPENGL_DETAIL_UTILITY_HPP

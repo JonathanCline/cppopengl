@@ -20,6 +20,6 @@ if (NOT TARGET glad_4_1)
 	DEFINE_GLAD_TARGET(4 5)
 	DEFINE_GLAD_TARGET(4 6)
 
-	add_library(glad ALIAS glad_4_6)
+	add_library(glad ALIAS glad_4_1)
 
 endif()
