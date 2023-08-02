@@ -17,7 +17,7 @@ namespace gl
 		{
 			ctx.DeleteVertexArrays(1, &_id);
 		};
-		void operator()(const context& ctx, vao_id _id) const
+		void operator()(const context& ctx, vao_id&& _id) const
 		{
 			(*this)(ctx, _id.get());
 		};
@@ -28,7 +28,7 @@ namespace gl
 		{
 			ctx.DeleteBuffers(1, &_id);
 		};
-		void operator()(const context& ctx, vbo_id _id) const
+		void operator()(const context& ctx, vbo_id&& _id) const
 		{
 			(*this)(ctx, _id.get());
 		};
@@ -39,7 +39,7 @@ namespace gl
 		{
 			ctx.DeleteShader(_id);
 		};
-		void operator()(const context& ctx, shader_id _id) const
+		void operator()(const context& ctx, shader_id&& _id) const
 		{
 			(*this)(ctx, _id.get());
 		};
@@ -50,7 +50,7 @@ namespace gl
 		{
 			ctx.DeleteProgram(_id);
 		};
-		void operator()(const context& ctx, program_id _id) const
+		void operator()(const context& ctx, program_id&& _id) const
 		{
 			(*this)(ctx, _id.get());
 		};
@@ -61,7 +61,7 @@ namespace gl
 		{
 			ctx.DeleteTextures(1, &_id);
 		};
-		void operator()(const context& ctx, texture_id _id) const
+		void operator()(const context& ctx, texture_id&& _id) const
 		{
 			(*this)(ctx, _id.get());
 		};

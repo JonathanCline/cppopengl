@@ -11,7 +11,7 @@
 
 namespace gl
 {
-	inline shader_id new_shader(const context& ctx, shader_type _type)
+	inline shader_id create_shader(const context& ctx, shader_type _type)
 	{
 		return shader_id(ctx.CreateShader(static_cast<GLenum>(_type)));
 	};

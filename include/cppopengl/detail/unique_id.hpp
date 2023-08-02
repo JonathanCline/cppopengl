@@ -68,7 +68,7 @@ namespace gl
 				if (this->good())
 				{
 					auto _deleter = this->get_deleter();
-					_deleter(ctx, this->id());
+					_deleter(ctx, std::move(this->id_));
 					this->id_.release();
 				};
 			};
@@ -133,6 +133,8 @@ namespace gl
 			{
 				return lhs != rhs.id();
 			};
+
+			constexpr operator const id_type& () const noexcept { return this->id_; };
 
 
 			constexpr basic_unique_id() noexcept :

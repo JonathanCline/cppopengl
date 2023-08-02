@@ -38,7 +38,7 @@ namespace gl
 
 
 
-	inline program_id new_program(const context& ctx)
+	inline program_id create_program(const context& ctx)
 	{
 		return program_id( ctx.CreateProgram() );
 	};
@@ -51,7 +51,7 @@ namespace gl
 	 * @param ctx OpenGL context.
 	 * @param _program An OpenGL program object ID.
 	 */
-	inline void use_program(const context& ctx, program_id _program)
+	inline void use_program(const context& ctx, const program_id& _program)
 	{
 		ctx.UseProgram(_program.get());
 	};

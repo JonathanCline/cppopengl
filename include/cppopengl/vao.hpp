@@ -15,7 +15,7 @@ namespace gl
 		return vao_id(_id);
 	};
 
-	inline void destroy(const context& ctx, vao_id _id)
+	inline void destroy(const context& ctx, vao_id&& _id)
 	{
 		auto _raw = _id.get();
 		ctx.DeleteVertexArrays(1, &_raw);
