@@ -48,7 +48,7 @@ namespace gl
 	enum class vbo_target : GLenum
 	{
 		array = GL_ARRAY_BUFFER,
-		element = GL_ELEMENT_ARRAY_BUFFER,
+		element_array = GL_ELEMENT_ARRAY_BUFFER,
 
 		copy_read = GL_COPY_READ_BUFFER,
 		copy_write = GL_COPY_WRITE_BUFFER,
