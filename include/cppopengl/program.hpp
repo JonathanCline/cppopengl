@@ -173,4 +173,32 @@ namespace gl
 		ctx.DisableVertexAttribArray(_index);
 	};
 
+	/**
+	 * @brief Invokes glGetAttribLocation
+	 * [OpenGL Documentation](https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glGetAttribLocation.xhtml)
+	 *
+	 * @param ctx OpenGL context.
+	 * @param _program OpenGL program object ID.
+	 * @param _name Name of the attribute (null terminated).
+	 * @return Attribute location on success, -1 otherwise.
+	*/
+	inline GLint get_attrib_location(const context& ctx, gl::program_id _program, const GLchar* _name)
+	{
+		return ctx.GetAttribLocation(_program.get(), _name);
+	};
+
+	/**
+	 * @brief Invokes glGetUniformLocation
+	 * [OpenGL Documentation](https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glGetUniformLocation.xhtml)
+	 * 
+	 * @param ctx OpenGL context.
+	 * @param _program OpenGL program object ID.
+	 * @param _name Name of the uniform (null terminated).
+	 * @return Uniform location on success, -1 otherwise.
+	*/
+	inline GLint get_uniform_location(const context& ctx, gl::program_id _program, const GLchar* _name)
+	{
+		return ctx.GetUniformLocation(_program.get(), _name);
+	};
+
 };

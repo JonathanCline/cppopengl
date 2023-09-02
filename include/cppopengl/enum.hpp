@@ -86,4 +86,24 @@ namespace gl
 		triangles_adjacency = GL_TRIANGLES_ADJACENCY,
 		patches = GL_PATCHES
 	};
+
+	enum class texture_internal_format : GLenum
+	{
+		r8 = GL_R8,
+		r16 = GL_R16,
+		rg8 = GL_RG8,
+		rg16 = GL_RG16,
+		rgb8 = GL_RGB8,
+		rgba8 = GL_RGBA8
+	};
+
+	enum class texture_format : GLenum
+	{
+		red = GL_RED,
+		rg = GL_RG,
+		rgb = GL_RGB,
+		bgr = GL_BGR,
+		rgba = GL_RGBA,
+		bgra = GL_BGRA
+	};
 };
