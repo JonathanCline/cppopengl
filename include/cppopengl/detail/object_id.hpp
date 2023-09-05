@@ -4,7 +4,6 @@
 
 /** @file */
 
-#include <cppopengl/detail/gl.hpp>
 #include <cppopengl/detail/utility.hpp>
 #include <cppopengl/detail/type_traits.hpp>
 
